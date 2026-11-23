@@ -3,6 +3,13 @@
 > A production-minded office pantry tracker for Bipolar Factory's internship assessment.  
 > Built with **React · TypeScript · Express · PostgreSQL · Prisma**.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://snack-overflow-teq3.onrender.com)
+[![Tests](https://img.shields.io/badge/Tests-40%2F40%20Passing-brightgreen?style=for-the-badge&logo=vitest&logoColor=white)](https://github.com/shreya5014/snack-overflow)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Mode-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/shreya5014/snack-overflow)
+
+🚀 **Live Application:** [https://snack-overflow-teq3.onrender.com](https://snack-overflow-teq3.onrender.com)  
+📦 **Repository:** [https://github.com/shreya5014/snack-overflow](https://github.com/shreya5014/snack-overflow)
+
 ---
 
 ## Table of Contents
