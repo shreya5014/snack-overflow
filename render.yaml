@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: snack-overflow
+    runtime: node
+    plan: free
+    buildCommand: npm run install:all && npm run build && npm run prisma:deploy && npm run prisma:seed
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: snack-overflow-db
+          property: connectionString
+
+databases:
+  - name: snack-overflow-db
+    plan: free
+    databaseName: snackoverflow
+    user: snackoverflow_user

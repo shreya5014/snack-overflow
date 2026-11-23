@@ -1,0 +1,87 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum SnackCategory {
+  SWEET
+  SAVOURY
+  DRINK
+  HEALTHY_ISH
+}
+
+enum InventoryActionType {
+  CONSUMPTION
+  RESTOCK
+}
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  name         String
+  passwordHash String
+  role         Role           @default(MEMBER)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  votes        Vote[]
+  inventoryLogs InventoryLog[]
+
+  @@index([email])
+}
+
+model Snack {
+  id                String         @id @default(uuid())
+  name              String         @unique
+  category          SnackCategory
+  quantity          Int            @default(0)
+  lowStockThreshold Int            @default(5)
+  isArchived        Boolean        @default(false)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  votes             Vote[]
+  inventoryLogs     InventoryLog[]
+
+  @@index([category])
+  @@index([isArchived])
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  userId    String
+  snackId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snack     Snack    @relation(fields: [snackId], references: [id], onDelete: Cascade)
+
+  // Enforces at the database level that a user cannot vote more than once for the same snack
+  @@unique([userId, snackId], name: "user_snack_unique_vote")
+  @@index([snackId, createdAt])
+}
+
+model InventoryLog {
+  id               String              @id @default(uuid())
+  snackId          String
+  userId           String
+  actionType       InventoryActionType
+  quantityChanged  Int                 // Positive for RESTOCK, negative for CONSUMPTION
+  previousQuantity Int
+  newQuantity      Int
+  createdAt        DateTime            @default(now())
+
+  snack            Snack               @relation(fields: [snackId], references: [id], onDelete: Restrict)
+  user             User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([snackId, createdAt])
+}
