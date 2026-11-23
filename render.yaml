@@ -3,7 +3,7 @@ services:
     name: snack-overflow
     runtime: node
     plan: free
-    buildCommand: npm run install:all && npm run build && npm run prisma:deploy && npm run prisma:seed
+    buildCommand: npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV

@@ -6,6 +6,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...');
 
+  const existingCount = await prisma.snack.count();
+  if (existingCount > 0) {
+    console.log(`Database already contains ${existingCount} snacks. Skipping seed to preserve data.`);
+    return;
+  }
+
   // Clean existing data for clean seed runs
   await prisma.vote.deleteMany();
   await prisma.inventoryLog.deleteMany();
